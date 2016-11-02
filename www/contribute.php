@@ -26,14 +26,14 @@
     <div class="navbar navbar-default" style="background-color:#536889;color:#f2d326;min-height:80px;border-radius:0;">
         <div class="col-xs-5 col-md-5">
             <img src="assets/bruin.png" width=55 height=55 style="float:left; margin-right:10px;margin-top:13px;">
-            <h1><a href="<?php echo $_SERVER['PHP_SELF']; ?>">Bruin Movie Database</a></h1>
+            <h1><a href="index.php">Bruin Movie Database</a></h1>
 
         </div>
         <div class="col-xs-2 col-md-2">
             <h4 style="padding-top:24px;padding-left:50px;"><a href="contribute.php">Contribute!</a></h4>
         </div>
         <div class="col-xs-5 col-md-5">
-        <form class="navbar-form navbar-right" style="padding-top:15px" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <form class="navbar-form navbar-right" style="padding-top:15px" method="get" action="index.php">
             <div class="form-group">
                 <input name="search" type="text" class="form-control" style="border-radius:0;" placeholder="Find Movies and Actors...">
             </div>
