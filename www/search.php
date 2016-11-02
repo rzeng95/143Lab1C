@@ -34,11 +34,13 @@
                       $tmp = $val->name;
 
                       if ($tmp == 'CONCAT(first,\' \',last)') {
-                          $tmp = 'Name';
+                          $tableHeader = $tableHeader."<th>Name</th>";
                       } elseif ($tmp == 'dob') {
-                          $tmp = 'Birth Date';
+                          $tableHeader = $tableHeader."<th>Birth Date</th>";
+                      } elseif ($tmp == 'id') {
+                        continue;
                       }
-                      $tableHeader = $tableHeader."<th>".$tmp."</th>";
+                      // $tableHeader = $tableHeader."<th>".$tmp."</th>";
                   }
                   $tableHeader = $tableHeader . "</tr>";
                   unset($val);
@@ -47,7 +49,7 @@
 
                   while($row = $rs->fetch_assoc()) {
                       $tableRow = "<tr>";
-                      $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                      // $tableRow = $tableRow."<td>".$row["id"]."</td>";
                       $tableRow = $tableRow."<td>"."<a href=\"actor_info.php?id=" . $row["id"] . "\">". $row["CONCAT(first,' ',last)"] . "</a>"."</td>";
                       $tableRow = $tableRow."<td>".$row["dob"]."</td>";
                       $tableRow = $tableRow . "</tr>";
@@ -110,11 +112,13 @@
                       $tmp = $val->name;
 
                       if ($tmp == 'title') {
-                          $tmp = 'Title';
+                          $tableHeader = $tableHeader."<th>Title</th>";
                       } elseif ($tmp == 'year') {
-                          $tmp = 'Year';
+                          $tableHeader = $tableHeader."<th>Year</th>";
+                      } elseif ($tmp == 'id') {
+                        continue;
                       }
-                      $tableHeader = $tableHeader."<th>".$tmp."</th>";
+                      // $tableHeader = $tableHeader."<th>".$tmp."</th>";
                   }
                   $tableHeader = $tableHeader . "</tr>";
                   unset($val);
@@ -124,7 +128,7 @@
 
                   while($row = $rs->fetch_assoc()) {
                       $tableRow = "<tr>";
-                      $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                      // $tableRow = $tableRow."<td>".$row["id"]."</td>";
                       $tableRow = $tableRow."<td>"."<a href=\"movie_info.php?id=" . $row["id"] . "\">". $row["title"] . "</a>"."</td>";
                       $tableRow = $tableRow."<td>".$row["year"]."</td>";
                       $tableRow = $tableRow . "</tr>";
@@ -186,11 +190,13 @@
                     $tmp = $val->name;
 
                     if ($tmp == 'CONCAT(first,\' \',last)') {
-                        $tmp = 'Name';
+                        $tableHeader = $tableHeader."<th>Name</th>";
                     } elseif ($tmp == 'dob') {
-                        $tmp = 'Birth Date';
+                        $tableHeader = $tableHeader."<th>Birth Date</th>";
+                    } elseif ($tmp == 'id') {
+                      continue;
                     }
-                    $tableHeader = $tableHeader."<th>".$tmp."</th>";
+                    // $tableHeader = $tableHeader."<th>".$tmp."</th>";
                 }
                 $tableHeader = $tableHeader . "</tr>";
                 unset($val);
@@ -199,7 +205,7 @@
 
                 while($row = $rs->fetch_assoc()) {
                     $tableRow = "<tr>";
-                    $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                    // $tableRow = $tableRow."<td>".$row["id"]."</td>";
                     $tableRow = $tableRow."<td>"."<a href=\"actor_info.php?id=" . $row["id"] . "\">". $row["CONCAT(first,' ',last)"] . "</a>"."</td>";
                     $tableRow = $tableRow."<td>".$row["dob"]."</td>";
                     $tableRow = $tableRow . "</tr>";
@@ -258,11 +264,13 @@
                     $tmp = $val->name;
 
                     if ($tmp == 'title') {
-                        $tmp = 'Title';
+                        $tableHeader = $tableHeader."<th>Title</th>";
                     } elseif ($tmp == 'year') {
-                        $tmp = 'Year';
+                        $tableHeader = $tableHeader."<th>Year</th>";
+                    } elseif ($tmp == 'id') {
+                      continue;
                     }
-                    $tableHeader = $tableHeader."<th>".$tmp."</th>";
+                    // $tableHeader = $tableHeader."<th>".$tmp."</th>";
                 }
                 $tableHeader = $tableHeader . "</tr>";
                 unset($val);
@@ -271,7 +279,7 @@
 
                 while($row = $rs->fetch_assoc()) {
                     $tableRow = "<tr>";
-                    $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                    // $tableRow = $tableRow."<td>".$row["id"]."</td>";
                     $tableRow = $tableRow."<td>"."<a href=\"movie_info.php?id=" . $row["id"] . "\">". $row["title"] . "</a>"."</td>";
                     $tableRow = $tableRow."<td>".$row["year"]."</td>";
                     $tableRow = $tableRow . "</tr>";
