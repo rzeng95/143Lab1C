@@ -17,4 +17,6 @@
     $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$id ORDER BY time DESC") or die(mysqli_error());
 
 
+    // TODOs
+    // Basic UI to display above data
 ?>
