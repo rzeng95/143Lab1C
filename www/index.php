@@ -50,9 +50,9 @@
 
     <?php
         if ( isset($_GET['search']) ) {
-            echo "<h4 style=\"text-align:center\"><b><i>Displaying Search Results:</i></b></h4>";
+            echo "<h2 style=\"text-align:center\"><b><i>Displaying Search Results:</i></b></h2>";
         } else {
-            echo "<h4 style=\"text-align:center\"><b><i>Welcome to the biggest movie database in the world! Search for any movie or actor!</i></b></h4>";
+            echo "<h3 style=\"text-align:center\"><b><i>Welcome to the biggest movie database in the world! Search for any movie or actor!</i></b></h3>";
         }
 
     ?>
