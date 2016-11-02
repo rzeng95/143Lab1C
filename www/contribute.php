@@ -132,7 +132,7 @@
             </div>
             <div class="form-group">
                 <label for="deathdate">Date of Death:</label>
-                <input id="deathdate" name="deathdate" class="form-control" placeholder="[Leave blank if still alive]" style="border-radius:0;">
+                <input id="deathdate" name="deathdate" class="form-control" placeholder="[Leave blank if alive]" style="border-radius:0;width:155px;">
             </div>
 
             <div class="form-group">
@@ -141,6 +141,40 @@
 
         </form>
         <h3>Add an Actor to a Movie</h3>
+        <form class="form-inline" method="get" action="add_actor_to_movie.php">
+            <div class="form-group">
+                <label for="actor">Actor:</label>
+                <select id="actor" name="actor" class="form-control" style="border-radius:0;width:160px;">
+                    <<?php
+
+                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                        if($db->connect_errno > 0){
+                            die('Unable to connect to database [' . $db->connect_error . ']');
+                        }
+
+                        $actors = $db->query("SELECT CONCAT(first,' ', last) FROM Actor");
+
+                        while ($row = $actors->fetch_assoc()) {
+                            $val = $row["CONCAT(first,' ', last)"];
+                            echo "<option value=\"$val\">$val</option>";
+                        }
+                    ?>
+
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="movie">Movie:</label>
+                <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
+                    <option value="hi">hi</option>
+                </select>
+            </div>
+
+        </form>
+
+
+
+
         <h3>Add an Actor to a Movie</h3>
 
     </div>
