@@ -146,37 +146,88 @@
                 <label for="actor">Actor:</label>
                 <select id="actor" name="actor" class="form-control" style="border-radius:0;width:160px;">
                     <<?php
-
                         $db = new mysqli('localhost', 'cs143', '', 'CS143');
                         if($db->connect_errno > 0){
                             die('Unable to connect to database [' . $db->connect_error . ']');
                         }
-
-                        $actors = $db->query("SELECT CONCAT(first,' ', last) FROM Actor");
-
+                        $actors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Actor");
                         while ($row = $actors->fetch_assoc()) {
+                            $id = $row["id"];
                             $val = $row["CONCAT(first,' ', last)"];
-                            echo "<option value=\"$val\">$val</option>";
+                            echo "<option value=\"$id\">$val</option>";
                         }
                     ?>
-
-
                 </select>
             </div>
             <div class="form-group">
                 <label for="movie">Movie:</label>
                 <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
-                    <option value="hi">hi</option>
+                    <<?php
+                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                        if($db->connect_errno > 0){
+                            die('Unable to connect to database [' . $db->connect_error . ']');
+                        }
+                        $movies = $db->query("SELECT id, title FROM Movie");
+                        while ($row = $movies->fetch_assoc()) {
+                            $id = $row["id"];
+                            $val = $row["title"];
+                            echo "<option value=\"$id\">$val</option>";
+                        }
+                    ?>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <input id="role" name="role" class="form-control" placeholder="Tony Stark" style="border-radius:0;width:155px;">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success" style="border-radius:0;">Submit</button>
             </div>
 
         </form>
 
+        <h3>Add a Director to a Movie</h3>
+        <form class="form-inline" method="get" action="add_director_to_movie.php">
 
+            <div class="form-group">
+                <label for="director">Actor:</label>
+                <select id="director" name="director" class="form-control" style="border-radius:0;width:160px;">
+                    <<?php
+                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                        if($db->connect_errno > 0){
+                            die('Unable to connect to database [' . $db->connect_error . ']');
+                        }
+                        $directors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Director");
+                        while ($row = $directors->fetch_assoc()) {
+                            $id = $row["id"];
+                            $val = $row["CONCAT(first,' ', last)"];
+                            echo "<option value=\"$id\">$val</option>";
+                        }
+                    ?>
+                </select>
+            </div>
 
-
-        <h3>Add an Actor to a Movie</h3>
-
+            <div class="form-group">
+                <label for="movie">Movie:</label>
+                <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
+                    <<?php
+                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                        if($db->connect_errno > 0){
+                            die('Unable to connect to database [' . $db->connect_error . ']');
+                        }
+                        $movies = $db->query("SELECT id, title FROM Movie");
+                        while ($row = $movies->fetch_assoc()) {
+                            $id = $row["id"];
+                            $val = $row["title"];
+                            echo "<option value=\"$id\">$val</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success" style="border-radius:0;">Submit</button>
+            </div>
+        </form>
     </div>
 
 
