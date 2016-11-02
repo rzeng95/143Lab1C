@@ -1,24 +1,24 @@
 <?php
 
-$db = new mysqli('localhost', 'cs143', '', 'CS143');
-if($db->connect_errno > 0){
-    die('Unable to connect to database [' . $db->connect_error . ']');
-}
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+    if($db->connect_errno > 0){
+        die('Unable to connect to database [' . $db->connect_error . ']');
+    }
 
-$search = $_GET['search'];
-$search = $db->real_escape_string($search);
-$queryType = $_GET['type'];
+    $search = $_GET['search'];
+    $search = $db->real_escape_string($search);
+    $queryType = $_GET['type'];
 
-$words = explode(' ', $search);
-$d2 = $queryType;
+    $words = explode(' ', $search);
+    $d2 = $queryType;
 
-if (trim($search) == '') {
-      // Do Nothing because no search query
+    if (trim($search) == '') {
+          // Do Nothing because no search query
     } else {
 
           if ($queryType == "actors") {
               echo "<h3><strong> Matching actors are: </strong></h3>";
-              $query = "SELECT CONCAT(first,' ',last), dob FROM Actor WHERE (first LIKE '%$words[0]%' OR last LIKE '%$words[0]%')";
+              $query = "SELECT id, CONCAT(first,' ',last), dob FROM Actor WHERE (first LIKE '%$words[0]%' OR last LIKE '%$words[0]%')";
               for($i = 1; $i < count($words); $i++) {
                 $word = $words[$i];
                 $query .= "AND (first LIKE '%$word%' OR last LIKE '%$word%')";
@@ -45,19 +45,31 @@ if (trim($search) == '') {
 
                   $tableBody = "";
 
-                  while($row = $rs->fetch_row()) {
+                  while($row = $rs->fetch_assoc()) {
                       $tableRow = "<tr>";
-                      foreach($row as $val) {
-
-                          if (empty($val)) $val="n/a";
-                          $tableRow = $tableRow."<td>".$val."</td>";
-                      }
+                      $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                      $tableRow = $tableRow."<td>"."<a href=\"actor_info.php?id=" . $row["id"] . "\">". $row["CONCAT(first,' ',last)"] . "</a>"."</td>";
+                      $tableRow = $tableRow."<td>".$row["dob"]."</td>";
                       $tableRow = $tableRow . "</tr>";
 
                       $tableBody = "{$tableBody}{$tableRow}";
                       unset($val);
                       unset($tableRow);
                   }
+
+                  // while($row = $rs->fetch_row()) {
+                  //     $tableRow = "<tr>";
+                  //     foreach($row as $val) {
+                  //
+                  //         if (empty($val)) $val="n/a";
+                  //         $tableRow = $tableRow."<td>".$val."</td>";
+                  //     }
+                  //     $tableRow = $tableRow . "</tr>";
+                  //
+                  //     $tableBody = "{$tableBody}{$tableRow}";
+                  //     unset($val);
+                  //     unset($tableRow);
+                  // }
 
                   $rs -> free();
               }
@@ -82,7 +94,7 @@ if (trim($search) == '') {
 
           } elseif ($queryType == "movies") {
               echo "<h3><strong> Matching movies are: </strong></h3>";
-              $query = "SELECT title, year FROM Movie WHERE (title LIKE '%$words[0]%')";
+              $query = "SELECT id, title, year FROM Movie WHERE (title LIKE '%$words[0]%')";
               for($i = 1; $i < count($words); $i++) {
                 $word = $words[$i];
                 $query .= "AND (title LIKE '%$word%')";
@@ -98,9 +110,9 @@ if (trim($search) == '') {
                       $tmp = $val->name;
 
                       if ($tmp == 'title') {
-                          $tmp = 'title';
+                          $tmp = 'Title';
                       } elseif ($tmp == 'year') {
-                          $tmp = 'year';
+                          $tmp = 'Year';
                       }
                       $tableHeader = $tableHeader."<th>".$tmp."</th>";
                   }
@@ -109,19 +121,32 @@ if (trim($search) == '') {
 
                   $tableBody = "";
 
-                  while($row = $rs->fetch_row()) {
-                      $tableRow = "<tr>";
-                      foreach($row as $val) {
 
-                          if (empty($val)) $val="n/a";
-                          $tableRow = $tableRow."<td>".$val."</td>";
-                      }
+                  while($row = $rs->fetch_assoc()) {
+                      $tableRow = "<tr>";
+                      $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                      $tableRow = $tableRow."<td>"."<a href=\"movie_info.php?id=" . $row["id"] . "\">". $row["title"] . "</a>"."</td>";
+                      $tableRow = $tableRow."<td>".$row["year"]."</td>";
                       $tableRow = $tableRow . "</tr>";
 
                       $tableBody = "{$tableBody}{$tableRow}";
                       unset($val);
                       unset($tableRow);
                   }
+
+                  // while($row = $rs->fetch_row()) {
+                  //     $tableRow = "<tr>";
+                  //     foreach($row as $val) {
+                  //
+                  //         if (empty($val)) $val="n/a";
+                  //         $tableRow = $tableRow."<td>".$val."</td>";
+                  //     }
+                  //     $tableRow = $tableRow . "</tr>";
+                  //
+                  //     $tableBody = "{$tableBody}{$tableRow}";
+                  //     unset($val);
+                  //     unset($tableRow);
+                  // }
 
                   $rs -> free();
               }
@@ -145,7 +170,7 @@ if (trim($search) == '') {
           } else {
 
             echo "<h3><strong> Matching actors are: </strong></h3>";
-            $query = "SELECT CONCAT(first,' ',last), dob FROM Actor WHERE (first LIKE '%$words[0]%' OR last LIKE '%$words[0]%')";
+            $query = "SELECT id, CONCAT(first,' ',last), dob FROM Actor WHERE (first LIKE '%$words[0]%' OR last LIKE '%$words[0]%')";
             for($i = 1; $i < count($words); $i++) {
               $word = $words[$i];
               $query .= "AND (first LIKE '%$word%' OR last LIKE '%$word%')";
@@ -172,19 +197,31 @@ if (trim($search) == '') {
 
                 $tableBody = "";
 
-                while($row = $rs->fetch_row()) {
+                while($row = $rs->fetch_assoc()) {
                     $tableRow = "<tr>";
-                    foreach($row as $val) {
-
-                        if (empty($val)) $val="n/a";
-                        $tableRow = $tableRow."<td>".$val."</td>";
-                    }
+                    $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                    $tableRow = $tableRow."<td>"."<a href=\"actor_info.php?id=" . $row["id"] . "\">". $row["CONCAT(first,' ',last)"] . "</a>"."</td>";
+                    $tableRow = $tableRow."<td>".$row["dob"]."</td>";
                     $tableRow = $tableRow . "</tr>";
 
                     $tableBody = "{$tableBody}{$tableRow}";
                     unset($val);
                     unset($tableRow);
                 }
+
+                // while($row = $rs->fetch_row()) {
+                //     $tableRow = "<tr>";
+                //     foreach($row as $val) {
+                //
+                //         if (empty($val)) $val="n/a";
+                //         $tableRow = $tableRow."<td>".$val."</td>";
+                //     }
+                //     $tableRow = $tableRow . "</tr>";
+                //
+                //     $tableBody = "{$tableBody}{$tableRow}";
+                //     unset($val);
+                //     unset($tableRow);
+                // }
 
                 $rs -> free();
             }
@@ -205,7 +242,7 @@ if (trim($search) == '') {
             ';
 
             echo "<h3><strong> Matching movies are: </strong></h3>";
-            $query = "SELECT title, year FROM Movie WHERE (title LIKE '%$words[0]%')";
+            $query = "SELECT id, title, year FROM Movie WHERE (title LIKE '%$words[0]%')";
             for($i = 1; $i < count($words); $i++) {
               $word = $words[$i];
               $query .= "AND (title LIKE '%$word%')";
@@ -221,9 +258,9 @@ if (trim($search) == '') {
                     $tmp = $val->name;
 
                     if ($tmp == 'title') {
-                        $tmp = 'title';
+                        $tmp = 'Title';
                     } elseif ($tmp == 'year') {
-                        $tmp = 'year';
+                        $tmp = 'Year';
                     }
                     $tableHeader = $tableHeader."<th>".$tmp."</th>";
                 }
@@ -232,19 +269,31 @@ if (trim($search) == '') {
 
                 $tableBody = "";
 
-                while($row = $rs->fetch_row()) {
+                while($row = $rs->fetch_assoc()) {
                     $tableRow = "<tr>";
-                    foreach($row as $val) {
-
-                        if (empty($val)) $val="n/a";
-                        $tableRow = $tableRow."<td>".$val."</td>";
-                    }
+                    $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                    $tableRow = $tableRow."<td>"."<a href=\"movie_info.php?id=" . $row["id"] . "\">". $row["title"] . "</a>"."</td>";
+                    $tableRow = $tableRow."<td>".$row["year"]."</td>";
                     $tableRow = $tableRow . "</tr>";
 
                     $tableBody = "{$tableBody}{$tableRow}";
                     unset($val);
                     unset($tableRow);
                 }
+
+                // while($row = $rs->fetch_row()) {
+                //     $tableRow = "<tr>";
+                //     foreach($row as $val) {
+                //
+                //         if (empty($val)) $val="n/a";
+                //         $tableRow = $tableRow."<td>".$val."</td>";
+                //     }
+                //     $tableRow = $tableRow . "</tr>";
+                //
+                //     $tableBody = "{$tableBody}{$tableRow}";
+                //     unset($val);
+                //     unset($tableRow);
+                // }
 
                 $rs -> free();
             }
@@ -267,7 +316,5 @@ if (trim($search) == '') {
             ';
           }
         }
-$d1 = $query;
-
-
+    $d1 = $query;
 ?>
