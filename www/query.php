@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>IMDb</title>
+    <title>Project 1B</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,7 +22,7 @@
 
         // Establish connection with mysql
 
-        $db = new mysqli('localhost', 'cs143', '', 'TEST'); //toDo: change this to 'CS143'
+        $db = new mysqli('localhost', 'cs143', '', 'CS143');
         if($db->connect_errno > 0){
             die('Unable to connect to database [' . $db->connect_error . ']');
         }
