@@ -1,46 +1,79 @@
 <?php
-    $db = new mysqli('localhost', 'cs143', '', 'CS143');
-    if($db->connect_errno > 0){
-        die('Unable to connect to database [' . $db->connect_error . ']');
-    }
 
-    // get the search from outside, as seen in movie_info.php
-    $search = $_GET["search"];
-    $search = $db->real_escape_string($search);
+$db = new mysqli('localhost', 'cs143', '', 'CS143');
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
 
-    // sample code for query
-    $words = explode(' ', $search);
-    if (trim($search) == '') {
-      // Do Nothing because no search query
+$query = $_GET['search'];
+$queryType = $_GET['type'];
+
+$d2 = $queryType;
+
+if ($queryType == "actors") {
+    $query = "SELECT CONCAT(first,' ',last), dob FROM Actor WHERE first LIKE '%$query%' OR last LIKE '%$query%'";
+
+    if (!($rs = $db->query($query))) {
+        $output = $db->error;
     } else {
+        $finfo = $rs->fetch_fields();
+        $tableHeader = "<tr>";
+        foreach($finfo as $val) {
+            $tmp = $val->name;
 
-      // actors
-      echo "<h3>Matching Actors</h3>";
-      $query = "SELECT id, last, first, dob FROM Actor WHERE (first LIKE '%$words[0]%' OR last LIKE '%$words[0]%')";
-      for($i = 1; $i < count($words); $i++) {
-        $word = $words[$i];
-        $query .= "AND (first LIKE '%$word%' OR last LIKE '%$word%')";
-      }
-      $query .= "ORDER BY first ASC";
-      $actors = $db->query($query) or die(mysqli_error());
-      while ($row = $actors->fetch_assoc()) {
-        echo "<a href=\"show_actor_info.php?id=" . $row["id"] . "\">" . $row["first"] . " " . $row["last"] . " (" . $row["dob"] . ")</a><br>";
-      }
-      $actors->free();
+            if ($tmp == 'CONCAT(first,\' \',last)') {
+                $tmp = 'Name';
+            } elseif ($tmp == 'dob') {
+                $tmp = 'Birth Date';
+            }
+            $tableHeader = $tableHeader."<th>".$tmp."</th>";
+        }
+        $tableHeader = $tableHeader . "</tr>";
+        unset($val);
 
-      // movies
-      echo "<h3>Matching Movies</h3>";
-      $query = "SELECT id, title, year FROM Movie WHERE (title LIKE '%$words[0]%') ORDER BY title ASC";
-      for($i = 1; $i < count($words); $i++) {
-        $word = $words[$i];
-        $query .= "AND (title LIKE '%$word%')";
-      }
-      $query .= "ORDER BY title ASC";
-      $movies = $db->query($query) or die(mysqli_error());
-      while ($row = $movies->fetch_assoc()) {
-        echo "<a href=\"show_movie_info.php?id=" . $row["id"] . "\">" . $row["title"] . " (" . $row["year"] . ")</a><br>";
-      }
-      $movies->free();
+        $tableBody = "";
+
+        while($row = $rs->fetch_row()) {
+            $tableRow = "<tr>";
+            foreach($row as $val) {
+
+                if (empty($val)) $val="n/a";
+                $tableRow = $tableRow."<td>".$val."</td>";
+            }
+            $tableRow = $tableRow . "</tr>";
+
+            $tableBody = "{$tableBody}{$tableRow}";
+            unset($val);
+            unset($tableRow);
+        }
+
+        $rs -> free();
     }
-    $db->free();
+
+    // At the very end, close connection with db
+    $db->close();
+    echo '
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-striped">
+                        <thead>
+                            '.$tableHeader.'
+                        </thead>
+                        <tbody>
+                            '.$tableBody.'
+                        </tbody>
+            </table>
+        </div>
+    </div>
+    ';
+
+
+} elseif ($queryType == "movies") {
+    $query = "SELECT id, title, year, rating, company FROM Movie WHERE title LIKE '%$query%'";
+} else {
+    $query = "SELECT ";
+}
+$d1 = $query;
+
+
 ?>
