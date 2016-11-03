@@ -21,6 +21,7 @@
     // Basic UI to display above data
 ?>
 
+
 <!DOCTYPE html>
 <html>
 
@@ -80,14 +81,33 @@
         if ($mid == "") {
             echo "<h4>Blank search detected: use the search bar above!</h4>";
         } else {
-            $actor = $db->query("SELECT id, title, year, rating, company FROM Movie WHERE id='$mid'") or die(mysqli_error());
-            $row = $actor->fetch_assoc();
+            $movie = $db->query("SELECT id, title, year, rating, company FROM Movie WHERE id='$mid'") or die(mysqli_error());
+            $actors = $db->query("SELECT A.id, CONCAT(A.first,' ',A.last), MA.role FROM Actor A, MovieActor MA WHERE $mid=MA.mid AND MA.aid=A.id") or die(mysqli_error());
+            $director = $db->query("SELECT CONCAT(D.first,' ',D.last) FROM Director D, MovieDirector MD WHERE MD.mid=$mid AND MD.did=D.id") or die(mysqli_error());
+            $genres = $db->query("SELECT genre FROM MovieGenre WHERE $mid=mid") or die(mysqli_error());
+            $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error());
+            $row = $movie->fetch_assoc();
+            $rowd = $director->fetch_assoc();
+
+
 
             $id = $row["id"];
             $title = $row["title"];
             $year = $row["year"];
             $rating = $row["rating"];
             $company = $row["company"];
+            $dir = $rowd["CONCAT(D.first,' ',D.last)"];
+            // $genre = $rowg["genre"];
+
+            if($rating == "") {
+              $rating = "N\A";
+            }
+            if($company == "") {
+              $company = "N\A";
+            }
+            if($dir == "") {
+              $dir = "N\A";
+            }
 
 
             echo "<h3>Movie Information:</h3>";
@@ -96,12 +116,75 @@
             <h5>Year: $year </h5>
             <h5>MPAA Rating: $rating </h5>
             <h5>Producer: $company </h5>
-            <h5>Year: $year </h5>
-            <h5>Director: $director</h5>
-            <h5>Genre(s): $genres</h5>
+            <h5>Director: $dir</h5>
+            <h5>Genre(s): </h5>
             ";
 
-            echo "<h3>Actors in this Movie:</h3>";
+            $isEmpty = true;
+            while ($row = $genres->fetch_array()) {
+              $isEmpty = false;
+              echo $row["genre"];
+              echo " ";
+            }
+
+            if($isEmpty) {
+              echo "N\A";
+            }
+
+
+            $finfo = $actors->fetch_fields();
+            $tableHeader = "<tr>";
+            foreach($finfo as $val) {
+                $tmp = $val->name;
+                if ($tmp == 'CONCAT(A.first,\' \',A.last)') {
+                    $tableHeader = $tableHeader."<th>Name</th>";
+                } elseif ($tmp == 'role') {
+                    $tableHeader = $tableHeader."<th>Role</th>";
+                } elseif ($tmp == 'id') {
+                  continue;
+                }
+                // $tableHeader = $tableHeader."<th>".$tmp."</th>";
+            }
+            $tableHeader = $tableHeader . "</tr>";
+            unset($val);
+
+            $tableBody = "";
+
+            while($row = $actors->fetch_assoc()) {
+                $tableRow = "<tr>";
+                // $tableRow = $tableRow."<td>".$row["id"]."</td>";
+                $tableRow = $tableRow."<td>"."<a href=\"actor_info.php?id=" . $row["id"] . "\">". $row["CONCAT(A.first,' ',A.last)"] . "</a>"."</td>";
+                $tableRow = $tableRow."<td>".$row["role"]."</td>";
+                $tableRow = $tableRow . "</tr>";
+
+                $tableBody = "{$tableBody}{$tableRow}";
+                unset($val);
+                unset($tableRow);
+            }
+
+
+
+            $actors -> free();
+
+
+            // At the very end, close connection with db
+            $db->close();
+            echo '
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-striped">
+                                <thead>
+                                    '.$tableHeader.'
+                                </thead>
+                                <tbody>
+                                    '.$tableBody.'
+                                </tbody>
+                    </table>
+                </div>
+            </div>
+            ';
+
+
         }
 
     ?>
