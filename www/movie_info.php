@@ -113,7 +113,7 @@
             ";
 
             $isDirEmpty = true;
-            while ($rowd = $director->fetch_array()) {
+            while ($row = $director->fetch_array()) {
               $isDirEmpty = false;
               echo $row["CONCAT(D.first,' ',D.last)"];
               echo " ";
