@@ -119,6 +119,13 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="sex">Gender:</label>
+                <select id="sex" name="sex" class="form-control" style="border-radius:0;">
+                    <option select="selected" value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="firstname">First Name:</label>
                 <input id="firstname" name="firstname" class="form-control" placeholder="Leonardo" style="border-radius:0;width:100px;">
             </div>
@@ -141,7 +148,7 @@
 
         </form>
         <h3>Add an Actor to a Movie</h3>
-        <form class="form-inline" method="get" action="add_actor_to_movie.php">
+        <form class="form-inline" method="get" action="add_actor_movie.php">
             <div class="form-group">
                 <label for="actor">Actor:</label>
                 <select id="actor" name="actor" class="form-control" style="border-radius:0;width:160px;">
@@ -152,9 +159,9 @@
                         }
                         $actors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Actor");
                         while ($row = $actors->fetch_assoc()) {
-                            $id = $row["id"];
-                            $val = $row["CONCAT(first,' ', last)"];
-                            echo "<option value=\"$id\">$val</option>";
+                            $aid = $row["id"];
+                            $name = $row["CONCAT(first,' ', last)"];
+                            echo "<option value=\"$aid\">$name</option>";
                         }
                     ?>
                 </select>
@@ -169,9 +176,9 @@
                         }
                         $movies = $db->query("SELECT id, title FROM Movie");
                         while ($row = $movies->fetch_assoc()) {
-                            $id = $row["id"];
-                            $val = $row["title"];
-                            echo "<option value=\"$id\">$val</option>";
+                            $mid = $row["id"];
+                            $title = $row["title"];
+                            echo "<option value=\"$mid\">$title</option>";
                         }
                     ?>
                 </select>
@@ -187,7 +194,7 @@
         </form>
 
         <h3>Add a Director to a Movie</h3>
-        <form class="form-inline" method="get" action="add_director_to_movie.php">
+        <form class="form-inline" method="get" action="add_director_movie.php">
 
             <div class="form-group">
                 <label for="director">Actor:</label>
@@ -199,9 +206,9 @@
                         }
                         $directors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Director");
                         while ($row = $directors->fetch_assoc()) {
-                            $id = $row["id"];
-                            $val = $row["CONCAT(first,' ', last)"];
-                            echo "<option value=\"$id\">$val</option>";
+                            $did = $row["id"];
+                            $name = $row["CONCAT(first,' ', last)"];
+                            echo "<option value=\"$did\">$name</option>";
                         }
                     ?>
                 </select>
@@ -217,9 +224,9 @@
                         }
                         $movies = $db->query("SELECT id, title FROM Movie");
                         while ($row = $movies->fetch_assoc()) {
-                            $id = $row["id"];
-                            $val = $row["title"];
-                            echo "<option value=\"$id\">$val</option>";
+                            $mid = $row["id"];
+                            $title = $row["title"];
+                            echo "<option value=\"$mid\">$title</option>";
                         }
                     ?>
                 </select>

@@ -87,17 +87,14 @@
             $genres = $db->query("SELECT genre FROM MovieGenre WHERE $mid=mid") or die(mysqli_error());
             $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error());
             $row = $movie->fetch_assoc();
-            $rowd = $director->fetch_assoc();
-
-
+            // $rowd = $director->fetch_assoc();
 
             $id = $row["id"];
             $title = $row["title"];
             $year = $row["year"];
             $rating = $row["rating"];
             $company = $row["company"];
-            $dir = $rowd["CONCAT(D.first,' ',D.last)"];
-            // $genre = $rowg["genre"];
+
 
             if($rating == "") {
               $rating = "N\A";
@@ -105,10 +102,6 @@
             if($company == "") {
               $company = "N\A";
             }
-            if($dir == "") {
-              $dir = "N\A";
-            }
-
 
             echo "<h3>Movie Information:</h3>";
             echo "
@@ -116,18 +109,29 @@
             <h5>Year: $year </h5>
             <h5>MPAA Rating: $rating </h5>
             <h5>Producer: $company </h5>
-            <h5>Director: $dir</h5>
-            <h5>Genre(s): </h5>
+            <h5>Director: </h5>
             ";
 
-            $isEmpty = true;
+            $isDirEmpty = true;
+            while ($rowd = $director->fetch_array()) {
+              $isDirEmpty = false;
+              echo $row["CONCAT(D.first,' ',D.last)"];
+              echo " ";
+            }
+
+            if($isDirEmpty) {
+              echo "N\A";
+            }
+
+            echo "<h5>Genre(s): </h5>";
+            $isgenEmpty = true;
             while ($row = $genres->fetch_array()) {
-              $isEmpty = false;
+              $isgenEmpty = false;
               echo $row["genre"];
               echo " ";
             }
 
-            if($isEmpty) {
+            if($isgenEmpty) {
               echo "N\A";
             }
 
