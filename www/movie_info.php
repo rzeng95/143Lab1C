@@ -109,7 +109,7 @@
             <h5>Year: $year </h5>
             <h5>MPAA Rating: $rating </h5>
             <h5>Producer: $company </h5>
-            <h5>Director: </h5>
+            <h5>Director:
             ";
 
             $isDirEmpty = true;
@@ -122,8 +122,9 @@
             if($isDirEmpty) {
               echo "N\A";
             }
-
-            echo "<h5>Genre(s): </h5>";
+            echo "</h5>";
+            
+            echo "<h5>Genre(s): ";
             $isgenEmpty = true;
             while ($row = $genres->fetch_array()) {
               $isgenEmpty = false;
@@ -134,6 +135,7 @@
             if($isgenEmpty) {
               echo "N\A";
             }
+            echo "</h5>";
 
             echo "<br>";
             echo "<br>";

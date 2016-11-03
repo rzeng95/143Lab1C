@@ -71,7 +71,6 @@
             $rating = $_GET["rating"];
             $genres = $_GET["genre"];
 
-
             // Validation of user inputs
             // Some variables should not be empty based on the schema of the tables.
             // i.e. $title and $company should not be empty and if they are empty

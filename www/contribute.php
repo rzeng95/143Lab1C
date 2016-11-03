@@ -93,7 +93,7 @@ $movies = $db->query("SELECT id, title FROM Movie");
             </div>
             <div class="form-group">
                 <label for="genre">Genre:</label>
-                <select id="genre" name="genre" class="form-control" style="border-radius:0;" multiple="multiple">
+                <select multiple id="genre" name="genre[]" class="form-control" style="border-radius:0;" multiple="multiple">
                     <option value="Action">Action</option>
                     <option value="Adult">Adult</option>
                     <option value="Adventure">Adventure</option>

@@ -64,10 +64,10 @@
 
           // Record all user inputs into variables
           // $is_actor, $first_name, $last_name, $gender, etc.
-          $mid = $_GET["mid"];
-          $aid = $_GET["aid"];
-          $name = $_GET["name"];
-          $title = $_GET["title"];
+          $mid = $_GET["movie"];
+          $aid = $_GET["actor"];
+          //$name = $_GET["name"];
+          //$title = $_GET["title"];
           $role = $_GET["role"];
 
           // Validation of user inputs
@@ -82,7 +82,7 @@
           }
           else {
             $newMovieActor = $db->query("INSERT INTO MovieActor (mid, aid, role) VALUES ('$mid', '$aid', '$role')") or die(mysqli_error($db));
-            echo "Thank you for your contribution! $name has been added to $title as $role.";
+            echo "Thank you for your contribution!";
           }
 
           $newMovieActor->free();
