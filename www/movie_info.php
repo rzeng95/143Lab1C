@@ -123,7 +123,7 @@
               echo "N\A";
             }
             echo "</h5>";
-            
+
             echo "<h5>Genre(s): ";
             $isgenEmpty = true;
             while ($row = $genres->fetch_array()) {
@@ -213,17 +213,66 @@
             echo "<br>";
             echo "<br>";
             echo "<h4><strong>Comments:</strong></h4>";
-            $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error($db));
+            $reviews = $db->query("SELECT name, rating, comment, time FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error($db));
+
+            $finfo = $reviews->fetch_fields();
+            $tableHeader = "<tr>";
+            foreach($finfo as $val) {
+                $tmp = $val->name;
+
+                if ($tmp == 'name') {
+                    $tableHeader = $tableHeader."<th>Name</th>";
+                } elseif ($tmp == 'rating') {
+                    $tableHeader = $tableHeader."<th>Rating</th>";
+                } elseif ($tmp == 'comment') {
+                    $tableHeader = $tableHeader."<th>Comment</th>";
+                } elseif ($tmp == 'time') {
+                    $tableHeader = $tableHeader."<th>Time</th>";
+                }
+            }
+            $tableHeader = $tableHeader . "</tr>";
+            unset($val);
+
+            $tableBody = "";
 
             while($row = $reviews->fetch_assoc()) {
-              // TODOs
-              // Display all exisitng reviews.
+                $tableRow = "<tr>";
+                $tableRow = $tableRow."<td>".$row["name"]."</td>";
+                $tableRow = $tableRow."<td>".$row["rating"]."</td>";
+                $tableRow = $tableRow."<td>".$row["comment"]."</td>";
+                $tableRow = $tableRow."<td>".date("F j, Y, g:i a",$row["time"])."</td>";
+                $tableRow = $tableRow . "</tr>";
+
+                $tableBody = "{$tableBody}{$tableRow}";
+                unset($tableRow);
             }
 
 
+            $avgRating->free();
+            $reviews->free();
 
 
         }
+        $db->close();
+        echo '
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-striped">
+                      <thead>
+                          '.$tableHeader.'
+                      </thead>
+                      <tbody>
+                          '.$tableBody.'
+                      </tbody>
+                </table>
+            </div>
+        </div>
+        ';
+
+
+
+
+
 
     ?>
     </div>

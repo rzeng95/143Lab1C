@@ -55,7 +55,6 @@
                       $tableRow = $tableRow . "</tr>";
 
                       $tableBody = "{$tableBody}{$tableRow}";
-                      unset($val);
                       unset($tableRow);
                   }
 
