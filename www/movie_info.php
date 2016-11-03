@@ -135,7 +135,9 @@
               echo "N\A";
             }
 
-
+            echo "<br>";
+            echo "<br>";
+            echo "<h4><strong>Cast members:</strong></h4>";
             $finfo = $actors->fetch_fields();
             $tableHeader = "<tr>";
             foreach($finfo as $val) {
@@ -171,8 +173,6 @@
             $actors -> free();
 
 
-            // At the very end, close connection with db
-            $db->close();
             echo '
             <div class="row">
                 <div class="col-sm-12">
@@ -187,6 +187,38 @@
                 </div>
             </div>
             ';
+
+
+
+            // Review Section
+            echo "<br>";
+            echo "<h4><strong>User Review:</strong></h4>";
+
+            $avgRating = $db->query("SELECT AVG(rating) FROM Review WHERE mid=$mid") or die(mysqli_error($db));
+            // echo $avgRating;
+            $avg = $avgRating->fetch_assoc();
+            $rating = $avg["AVG(rating)"];
+            if($rating == ""){
+              echo "No review has been recorded for this movie.";
+            }
+            else{
+              echo "The average rating for this movie is ";
+              echo round($rating);
+              echo "/5.";
+            }
+
+
+            echo "<br>";
+            echo "<br>";
+            echo "<h4><strong>Comments:</strong></h4>";
+            $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error($db));
+
+            while($row = $reviews->fetch_assoc()) {
+              // TODOs
+              // Display all exisitng reviews.
+            }
+
+
 
 
         }
