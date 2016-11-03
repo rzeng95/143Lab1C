@@ -19,6 +19,16 @@
 
 <body>
 
+<?php
+$db = new mysqli('localhost', 'cs143', '', 'CS143');
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+$actors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Actor");
+$directors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Director");
+$movies = $db->query("SELECT id, title FROM Movie");
+?>
+
 <div class="container">
     <div id="with-filler">
 
@@ -152,12 +162,7 @@
             <div class="form-group">
                 <label for="actor">Actor:</label>
                 <select id="actor" name="actor" class="form-control" style="border-radius:0;width:160px;">
-                    <<?php
-                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
-                        if($db->connect_errno > 0){
-                            die('Unable to connect to database [' . $db->connect_error . ']');
-                        }
-                        $actors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Actor");
+                    <?php
                         while ($row = $actors->fetch_assoc()) {
                             $aid = $row["id"];
                             $name = $row["CONCAT(first,' ', last)"];
@@ -174,7 +179,7 @@
                         if($db->connect_errno > 0){
                             die('Unable to connect to database [' . $db->connect_error . ']');
                         }
-                        $movies = $db->query("SELECT id, title FROM Movie");
+
                         while ($row = $movies->fetch_assoc()) {
                             $mid = $row["id"];
                             $title = $row["title"];
@@ -200,11 +205,7 @@
                 <label for="director">Actor:</label>
                 <select id="director" name="director" class="form-control" style="border-radius:0;width:160px;">
                     <<?php
-                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
-                        if($db->connect_errno > 0){
-                            die('Unable to connect to database [' . $db->connect_error . ']');
-                        }
-                        $directors = $db->query("SELECT id, CONCAT(first,' ', last) FROM Director");
+
                         while ($row = $directors->fetch_assoc()) {
                             $did = $row["id"];
                             $name = $row["CONCAT(first,' ', last)"];
@@ -218,10 +219,6 @@
                 <label for="movie">Movie:</label>
                 <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
                     <<?php
-                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
-                        if($db->connect_errno > 0){
-                            die('Unable to connect to database [' . $db->connect_error . ']');
-                        }
                         $movies = $db->query("SELECT id, title FROM Movie");
                         while ($row = $movies->fetch_assoc()) {
                             $mid = $row["id"];
