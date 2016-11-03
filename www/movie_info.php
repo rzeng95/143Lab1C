@@ -194,7 +194,7 @@
 
             // Review Section
             echo "<br>";
-            echo "<h4><strong>User Review:</strong></h4>";
+            echo "<h4><strong>Average rating:</strong></h4>";
 
             $avgRating = $db->query("SELECT AVG(rating) FROM Review WHERE mid=$mid") or die(mysqli_error($db));
             // echo $avgRating;
@@ -205,14 +205,14 @@
             }
             else{
               echo "The average rating for this movie is ";
-              echo round($rating);
+              echo round($rating, 1);
               echo "/5.";
             }
 
 
             echo "<br>";
             echo "<br>";
-            echo "<h4><strong>Comments:</strong></h4>";
+            echo "<h4><strong>Reviews:</strong></h4>";
             $reviews = $db->query("SELECT name, rating, comment, time FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error($db));
 
             $finfo = $reviews->fetch_fields();
@@ -239,7 +239,7 @@
                 $tableRow = "<tr>";
                 $tableRow = $tableRow."<td>".$row["name"]."</td>";
                 $tableRow = $tableRow."<td>".$row["rating"]."</td>";
-                $tableRow = $tableRow."<td>".$row["comment"]."</td>";
+                $tableRow = $tableRow."<td>".wordwrap($row["comment"], 100, "<br />\n")."</td>";
                 $tableRow = $tableRow."<td>".date("F j, Y, g:i a",$row["time"])."</td>";
                 $tableRow = $tableRow . "</tr>";
 

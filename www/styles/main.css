@@ -29,3 +29,9 @@ a:active { text-decoration: none; }
 * {
     font-family: 'Roboto', sans-serif;
 }
+
+/* line break for table cell */
+table td, table th {
+    word-wrap: break-word;       /* Internet Explorer 5.5+, Chrome, Firefox 3+ */
+    overflow-wrap: break-word;   /* CSS3 standard: Chrome & Opera 2013+ */
+}
