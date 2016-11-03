@@ -49,9 +49,73 @@
 
     <?php
         $aid = $_GET['id'];
-        echo "<p>
-        $aid
-        </p>";
+        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+        if($db->connect_errno > 0){
+            die('Unable to connect to database [' . $db->connect_error . ']');
+        }
+
+        if ($aid == "") {
+            echo "<h4>Blank search detected: use the search bar above!</h4>";
+        } else {
+            $actor = $db->query("SELECT CONCAT(first,' ', last), sex, dob, dod FROM Actor WHERE id=$aid") or die(mysqli_error());
+            $row = $actor->fetch_assoc();
+
+            $name = $row["CONCAT(first,' ', last)"];
+            $sex = $row["sex"];
+            $dob = $row["dob"];
+            if (empty($row["dod"])) {
+                $dod = "Still Alive";
+            } else {
+                $dod = $row["dod"];
+            }
+
+            echo "<h3>Actor Information:</h3>";
+            echo "
+            <table class=\"table table-bordered table-striped\">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Date of Birth</th>
+                        <th>Date of Death</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$name</td>
+                        <td>$sex</td>
+                        <td>$dob</td>
+                        <td>$dod</td>
+                    </tr>
+                </tbody>
+            </table>
+            ";
+            echo "<h3>Actor Movies:</h3>";
+            echo "
+            <table class=\"table table-bordered table-striped\">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ";
+            $movies = $db->query("SELECT id, title, role FROM Movie m, MovieActor ma WHERE ma.aid = '$aid' AND m.id = ma.mid") or die(mysqli_error());
+            while ($row = $movies->fetch_assoc()) {
+                echo "<tr>";
+                $id = $row["id"];
+                $title = $row["title"];
+                $role = $row["role"];
+                echo "<td><a href=\"movie_info.php?id='$id'\">$title</a></td>";
+                echo "<td>$role</td>";
+
+                echo "</tr>";
+            }
+
+            echo "</tbody></table>";
+        }
+
     ?>
     </div>
 
@@ -75,7 +139,6 @@
 
     // get the actor id from outside
     $id = $_GET["id"];
-    echo "$id";
 
     $actor = $db->query("SELECT last, first, sex, dob, dod FROM Actor WHERE id=$id") or die(mysqli_error());
     $movies = $db->query("SELECT title FROM Movie WHERE id IN (SELECT mid FROM MovieActor WHERE aid=$id)") or die(mysqli_error());
