@@ -174,11 +174,11 @@ $movies = $db->query("SELECT id, title FROM Movie");
             <div class="form-group">
                 <label for="movie">Movie:</label>
                 <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
-                    <<?php
-                        $db = new mysqli('localhost', 'cs143', '', 'CS143');
-                        if($db->connect_errno > 0){
-                            die('Unable to connect to database [' . $db->connect_error . ']');
-                        }
+                    <?php
+                        // $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                        // if($db->connect_errno > 0){
+                        //     die('Unable to connect to database [' . $db->connect_error . ']');
+                        // }
 
                         while ($row = $movies->fetch_assoc()) {
                             $mid = $row["id"];
@@ -202,9 +202,9 @@ $movies = $db->query("SELECT id, title FROM Movie");
         <form class="form-inline" method="get" action="add_director_movie.php">
 
             <div class="form-group">
-                <label for="director">Actor:</label>
+                <label for="director">Director:</label>
                 <select id="director" name="director" class="form-control" style="border-radius:0;width:160px;">
-                    <<?php
+                    <?php
 
                         while ($row = $directors->fetch_assoc()) {
                             $did = $row["id"];
@@ -218,8 +218,8 @@ $movies = $db->query("SELECT id, title FROM Movie");
             <div class="form-group">
                 <label for="movie">Movie:</label>
                 <select id="movie" name="movie" class="form-control" style="border-radius:0;width:160px;">
-                    <<?php
-                        $movies = $db->query("SELECT id, title FROM Movie");
+                    <?php
+                        // $movies = $db->query("SELECT id, title FROM Movie");
                         while ($row = $movies->fetch_assoc()) {
                             $mid = $row["id"];
                             $title = $row["title"];
@@ -233,6 +233,13 @@ $movies = $db->query("SELECT id, title FROM Movie");
             </div>
         </form>
     </div>
+
+    <?php
+        $movies->free();
+        $actors->free();
+        $directors->free();
+        $db->close();
+     ?>
 
 
     </div>

@@ -72,20 +72,45 @@
     <div id="scroll-list">
 
     <?php
-        $mid = $_GET['id'];
+
         $db = new mysqli('localhost', 'cs143', '', 'CS143');
         if($db->connect_errno > 0){
             die('Unable to connect to database [' . $db->connect_error . ']');
         }
 
+        // update comment
+        $comment_name = $_GET["comment-name"];
+        $comment_rating = $_GET["comment-rating"];
+        $comment = $_GET["comment"];
+        $comment_mid = $_GET["comment_mid"];
+
+        if ($comment_name == "") {
+            $comment_name = "Anonymous";
+        } elseif ($comment == "") {
+            $comment = "N/A";
+        }
+
+        if($comment_mid != ""){
+            $mid = $comment_mid;
+            $newReview = $db->query("INSERT INTO Review (name, time, mid, rating, comment) VALUES ('$comment_name',NULL, '$comment_mid','$comment_rating','$comment')") OR die(mysqli_error($db));
+            echo "<h4> Thank you for your contribution! </h4>";
+        }
+
+
+
+        if($mid == ""){
+            $mid = $_GET['id'];
+        }
+
         if ($mid == "") {
             echo "<h4>Blank search detected: use the search bar above!</h4>";
         } else {
-            $movie = $db->query("SELECT id, title, year, rating, company FROM Movie WHERE id='$mid'") or die(mysqli_error());
-            $actors = $db->query("SELECT A.id, CONCAT(A.first,' ',A.last), MA.role FROM Actor A, MovieActor MA WHERE $mid=MA.mid AND MA.aid=A.id") or die(mysqli_error());
-            $director = $db->query("SELECT CONCAT(D.first,' ',D.last) FROM Director D, MovieDirector MD WHERE MD.mid=$mid AND MD.did=D.id") or die(mysqli_error());
-            $genres = $db->query("SELECT genre FROM MovieGenre WHERE $mid=mid") or die(mysqli_error());
-            $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error());
+
+            $movie = $db->query("SELECT id, title, year, rating, company FROM Movie WHERE id='$mid'") or die(mysqli_error($db));
+            $actors = $db->query("SELECT A.id, CONCAT(A.first,' ',A.last), MA.role FROM Actor A, MovieActor MA WHERE $mid=MA.mid AND MA.aid=A.id") or die(mysqli_error($db));
+            $director = $db->query("SELECT CONCAT(D.first,' ',D.last) FROM Director D, MovieDirector MD WHERE MD.mid=$mid AND MD.did=D.id") or die(mysqli_error($db));
+            $genres = $db->query("SELECT genre FROM MovieGenre WHERE $mid=mid") or die(mysqli_error($db));
+            $reviews = $db->query("SELECT name, rating, time, comment FROM Review WHERE mid=$mid ORDER BY time DESC") or die(mysqli_error($db));
             $row = $movie->fetch_assoc();
             // $rowd = $director->fetch_assoc();
 
@@ -171,8 +196,11 @@
             }
 
 
-
+            $movie->free();
             $actors -> free();
+            $director->free();
+            $genres->free();
+            $reviews->free();
 
 
             echo '
@@ -209,6 +237,8 @@
               echo "/5.";
             }
 
+            echo "<br>";
+            echo "<h5><a href=\"add_comment.php?id=$mid\">Click here to leave your comment and rating for <strong>$title</strong>!</a></h5>";
 
             echo "<br>";
             echo "<br>";
@@ -253,6 +283,7 @@
 
 
         }
+
         $db->close();
         echo '
         <div class="row">
@@ -268,6 +299,7 @@
             </div>
         </div>
         ';
+        $newReview->free();
 
 
 
