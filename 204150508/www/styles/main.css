@@ -1,0 +1,37 @@
+/* Stop links from changing colors */
+a { color: inherit; }
+a:link { text-decoration: none; }
+a:hover { text-decoration: none; color: inherit;}
+a:visited { text-decoration: none; }
+a:active { text-decoration: none; }
+
+/* Used to style header bar */
+#header-bar {
+    background-color:#536889;
+    /*color:#b7a01d;*/
+    color: blue;
+    min-height:80px;
+
+}
+
+/* Change default background color */
+#with-filler {
+    background: #e8e9f2;
+}
+
+#scroll-list{
+    overflow:scroll;
+    height:calc(100vh - 110px);
+    overflow-x: hidden;
+}
+
+/* Change default font */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* line break for table cell */
+table td, table th {
+    word-wrap: break-word;       /* Internet Explorer 5.5+, Chrome, Firefox 3+ */
+    overflow-wrap: break-word;   /* CSS3 standard: Chrome & Opera 2013+ */
+}
