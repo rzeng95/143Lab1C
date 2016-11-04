@@ -66,21 +66,19 @@
           // Record all user inputs into variables
           // $is_actor, $first_name, $last_name, $gender, etc.
 
-          $mid = $_GET["mid"];
-          $did = $_GET["did"];
-          $name = $_GET["name"];
-          $title = $_GET["title"];
+          $mid = $_GET["movie"];
+          $did = $_GET["director"];
 
           // Validation of user inputs
           // Some variables should not be empty based on the shema of the tables.
           // i.e. $first_name and $last_name should not be empty and if they are empty
           // should print out error message telling the user what is wrong
+
           if($mid == "" || $did == "") {
             echo "Please select a movie and a director.";
-
-          else {
+          } else {
             $newMovieDirector = $db->query("INSERT INTO MovieDirector (mid, did) VALUES ('$mid', '$did')") or die(mysqli_error($db));
-            echo "Thank you for your contribution! $name has been added to $title as director.";
+            echo "Thank you for your contribution!";
           }
 
           $newMovieDirector->free();
